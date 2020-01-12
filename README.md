@@ -27,15 +27,15 @@ requirements.txt    # requirements file at pip format
 ## Command Line
 To perform the automated perspective correction _(let the algorithm decided which method is the best)_ of an image via command line use
 ```bash
-python warp.py <image_path>
+python warp.py $image_path
 ```
 
 In case you want to apply a specific methodology, vanishing point or marker detection you may use respectively:
 ```bash
-python warp_without_marker.py <image_path>
+python warp_without_marker.py $image_path
 ```
 ```bash
-python warp_with_marker.py <image_path>
+python warp_with_marker.py $image_path
 ```
 
 Each script will try to perform the correction _(if possible)_ and will save the image with a `_warp` suffix in the same folder.

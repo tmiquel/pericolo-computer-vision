@@ -62,7 +62,7 @@ def query_sift(query_img, sift_detector, sift_trainDesc, flann):
     for m, n in sift_matches:
         if m.distance < 0.75 * n.distance:
             sift_goodMatch.append(m)
-    logging.debug(f"Found matches: {len(sift_goodMatch)}")
+    logging.info(f"Found matches: {len(sift_goodMatch)}")
     return sift_goodMatch, sift_queryKP, sift_queryDesc
 
 

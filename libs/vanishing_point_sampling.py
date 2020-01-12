@@ -113,7 +113,7 @@ def ransac(locations, directions, strengths, num_ransac_iter=2000, threshold_inl
         if current_scores.sum() > best_scores.sum():
             best_model = current_model
             best_scores = current_scores
-            logging.debug(f"Current best model has {current_scores.sum()} votes at iteration {ransac_iter}")
+            logging.info(f"Current best model has {current_scores.sum()} votes at iteration {ransac_iter}")
     return best_model
 
 

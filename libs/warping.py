@@ -222,19 +222,21 @@ def warp_image(image, vp1, vp2, clip=True, clip_factor=3):
     return warped_img
 
 def marker_position_in_projection(image, vp1, vp2, aruco_borders,clip=True, clip_factor=3):
-    """Warp the perspective of an image given a set of vanishing points
+    """Given vanishing points and the border of a marker in the initial image, returns
+    the coordinates of the marker in the projected image
     
     Args:
     -----
         image (np.array): Image to Warp (`RGB`/`BGR`/`GRAYSCALE`)
         vp1 (np.array): First vanishing point description
         vp2 (np.array): Second vanishing point description
+        aruco_borders(np.array): Marker corners coordinates in initial image
         clip (bool, optional): Whether to clip or not the image. Defaults to False.
         clip_factor (int, optional): In case of clipping, which factor to apply. Defaults to 3.
     
     Returns:
     --------
-        np.array: Warped image
+        np.array: marker corners coordinates in projected image
 
     Note:
     -----

@@ -61,9 +61,6 @@ def ransac(locations, directions, strengths, num_ransac_iter=2000, threshold_inl
     --------
         np.array: Vanishing Point description
     
-    Bibliography:
-    -------------
-    TODO
     """
      # Convert to homogenous geometry
     lines = to_homogenous_geometry(locations, directions, strengths)

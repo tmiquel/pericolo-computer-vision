@@ -156,6 +156,8 @@ To configure the `ImageWarper` behavior you can tweak the `config.py` file in th
 
 # Requirements
 
+> **PYTHON VERSION** == **3.7.x**
+
 All thos requirements are not needed to make scripts run, but they might be mandatory to execute every notebook
 ```r
 appnope==0.1.0 ; sys_platform == 'darwin'

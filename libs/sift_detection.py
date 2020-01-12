@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 import cv2
 from config import MIN_MATCH_COUNT
@@ -61,7 +62,7 @@ def query_sift(query_img, sift_detector, sift_trainDesc, flann):
     for m, n in sift_matches:
         if m.distance < 0.75 * n.distance:
             sift_goodMatch.append(m)
-    print(f"Found matches: {len(sift_goodMatch)}")
+    logging.debug(f"Found matches: {len(sift_goodMatch)}")
     return sift_goodMatch, sift_queryKP, sift_queryDesc
 
 
@@ -94,7 +95,7 @@ def compute_detector_corners(trainImg, goodMatch, trainKP, queryKP, force_true=F
         queryBorder = cv2.perspectiveTransform(trainBorder, H)
         return trainBorder, queryBorder
     else:
-        print("Not Enough match found")
+        logging.warning("Not Enough match found")
         return [], []
 
 

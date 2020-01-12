@@ -1,5 +1,5 @@
 import numpy as np
-
+import logging
 from libs.edgelets_processing import to_homogenous_geometry
 
 def compute_score(vanishing_point, locations, directions, strengths, threshold_inlier=5):
@@ -113,8 +113,7 @@ def ransac(locations, directions, strengths, num_ransac_iter=2000, threshold_inl
         if current_scores.sum() > best_scores.sum():
             best_model = current_model
             best_scores = current_scores
-            print("Current best model has {} votes at iteration {}".format(
-                current_scores.sum(), ransac_iter))
+            logging.debug(f"Current best model has {current_scores.sum()} votes at iteration {ransac_iter}")
     return best_model
 
 

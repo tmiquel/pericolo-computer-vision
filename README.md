@@ -109,7 +109,7 @@ To configure the `ImageWarper` behavior you can tweak the `config.py` file in th
 >#### MAX_SIZE_ALLOWED
 > Maximum size allowed before the process is interrupted
 
-# SIFT DETECTION
+## SIFT DETECTION
 >#### ENCLOSED_MARKER_FILE (Aruco Marker only)
 > Name of the enclosed marker file. This file should be in the `markers` folder
 

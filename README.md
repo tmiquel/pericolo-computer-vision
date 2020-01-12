@@ -206,7 +206,7 @@ nbformat==5.0.3
 networkx==2.4
 notebook==6.0.2
 numpy==1.18.1
-opencv-contrib-python==3.4.2.16
+opencv-contrib-python==3.4.2.17
 pandocfilters==1.4.2
 parso==0.5.2
 pexpect==4.7.0 ; sys_platform != 'win32'

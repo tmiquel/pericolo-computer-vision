@@ -145,6 +145,7 @@ class ImageWarper:
             logging.info(
                 f"CHECK - RANSAC - EDGELETS NUMBER - {len(locations)} edgelets found"
             )
+            self.set_logs(f"RANSAC - EDGELETS NUMBER", True)
             return True
         else:
             logging.warning(f"CHECK - RANSAC - {self.image_path}")
@@ -153,6 +154,7 @@ class ImageWarper:
             logging.warning(
                 f"CHECK - RANSAC - EDGELETS NUMBER - {len(locations)} edgelets found"
             )
+            self.set_logs(f"RANSAC - EDGELETS NUMBER", False)
             return False
 
     def _check_ransac_score(
@@ -172,6 +174,7 @@ class ImageWarper:
             logging.info(
                 f"CHECK - RANSAC - MINIMUM SCORE - {score.sum()}/{target_score}"
             )
+            self.set_logs(f"RANSAC - MINIMUM SCORE", True)
             return True
         else:
             logging.warning(f"CHECK - RANSAC - {self.image_path}")
@@ -180,6 +183,7 @@ class ImageWarper:
             logging.warning(
                 f"CHECK - RANSAC - MINIMUM SCORE - {score.sum()}/{target_score}"
             )
+            self.set_logs(f"RANSAC - MINIMUM SCORE", False)
             return False
 
     def _check_match(self, n_matches, name, threshold):

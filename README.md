@@ -69,6 +69,10 @@ Notebook for Aruco marker warping methodology. This notebook focus on how to det
 Notebook for Vanishing point warping methodology. This notebook focus on the RANSAC algorithm, the edgelets detection, the homogenous coordinates and the scoring system
 ## Pericolo - 04 - API - ImageWarper demonstration
 Example notebook to show how to use the `ImageWarper` class
+## Pericolo - 99 - Marker Detection - Ten/Twenty EUR
+Exploration notebooks to detect bank notes
+## Pericolo - 99 - Warp Perspective - Ten EUR
+Exploration notebooks for warping images with bank note markers
 
 # Configuration
 To configure the `ImageWarper` behavior you can tweak the `config.py` file in the root folder

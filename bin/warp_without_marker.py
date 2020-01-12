@@ -8,4 +8,5 @@ if __name__ == '__main__':
     iw = ImageWarper(image_name)
     print("Rectifying {}".format(image_name))
     result_image = iw.warp_without_marker()
-    io.imsave(save_name, result_image)
+    if result_image is not None:
+        io.imsave(save_name, result_image)

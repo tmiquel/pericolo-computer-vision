@@ -155,3 +155,68 @@ To configure the `ImageWarper` behavior you can tweak the `config.py` file in th
 > - Use negative value to not use any confidence level
 
 # Requirements
+
+All thos requirements are not needed to make scripts run, but they might be mandatory to execute every notebook
+```r
+appnope==0.1.0 ; sys_platform == 'darwin'
+attrs==19.3.0
+backcall==0.1.0
+bleach==3.1.0
+cycler==0.10.0
+decorator==4.4.1
+defusedxml==0.6.0
+entrypoints==0.3
+imageio==2.6.1
+importlib-metadata==1.3.0 ; python_version < '3.8'
+imutils==0.5.3
+ipykernel==5.1.3
+ipython-genutils==0.2.0
+ipython==7.11.1 ; python_version >= '3.3'
+ipywidgets==7.5.1
+jedi==0.15.2
+jinja2==2.10.3
+jsonschema==3.2.0
+jupyter-client==5.3.4
+jupyter-console==6.0.0
+jupyter-core==4.6.1
+jupyter==1.0.0
+jupyterlab-pygments==0.1.0
+kiwisolver==1.1.0
+markupsafe==1.1.1
+matplotlib==3.2.0rc1
+mistune==0.8.4
+more-itertools==8.0.2
+nbconvert==6.0.0a0
+nbformat==5.0.3
+networkx==2.4
+notebook==6.0.2
+numpy==1.18.1
+opencv-contrib-python==3.4.2.16
+pandocfilters==1.4.2
+parso==0.5.2
+pexpect==4.7.0 ; sys_platform != 'win32'
+pickleshare==0.7.5
+pillow==7.0.0
+prometheus-client==0.7.1
+prompt-toolkit==2.0.10
+ptyprocess==0.6.0 ; os_name != 'nt'
+pygments==2.5.2
+pyparsing==2.4.6
+pyrsistent==0.15.7
+python-dateutil==2.8.1
+pywavelets==1.1.1
+pyzmq==18.1.1
+qtconsole==4.6.0
+scikit-image==0.16.2
+scipy==1.4.1
+send2trash==1.5.0
+six==1.13.0
+terminado==0.8.3
+testpath==0.4.4
+tornado==6.0.3
+traitlets==4.3.3
+wcwidth==0.1.8
+webencodings==0.5.1
+widgetsnbextension==3.5.1
+zipp==0.6.0
+```

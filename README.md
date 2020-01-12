@@ -3,6 +3,7 @@
 > 
 > This repository is build by Walid Benbihi as part of a freelance contract at the exclusive discretion of Pericolo teams.
 
+
 # Project structure
 The following repository is constructed as follow
 ```bash
@@ -55,6 +56,19 @@ result_log = iw.logs # Get the validation steps as a dictionnary
 ```
 
 Further documentation of the `ImageWarper` class is proviede [HERE](docs/IMAGEWARPER.md)
+
+# Notebooks
+Several notebooks are available to grasp the algorithm philosophy
+## Pericolo - 01 - Marker Generation
+Example notebook to show how the `cv2.aruco` package works and to show how to generate Aruco markers
+## Pericolo - 02 - Marker Detection - Aruco Board
+Notebook for Aruco marker warping methodology. This notebook focus on how to detect an Aruco Board
+## Pericolo - 02 - Marker Detection - Aruco Enclosed
+Notebook for Aruco marker warping methodology. This notebook focus on how to detect an Enclosed Aruco Marker
+## Pericolo - 03 - Warp Perspective - Vanishing Points
+Notebook for Vanishing point warping methodology. This notebook focus on the RANSAC algorithm, the edgelets detection, the homogenous coordinates and the scoring system
+## Pericolo - 04 - API - ImageWarper demonstration
+Example notebook to show how to use the `ImageWarper` class
 
 # Configuration
 To configure the `ImageWarper` behavior you can tweak the `config.py` file in the root folder
@@ -135,3 +149,5 @@ To configure the `ImageWarper` behavior you can tweak the `config.py` file in th
 > 1. Use **Moderate** confidence Level
 > 2. Use **Strong** confidence Level
 > - Use negative value to not use any confidence level
+
+# Requirements

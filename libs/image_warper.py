@@ -444,9 +444,11 @@ class ImageWarper:
         self.vertical_scale = self.marker_size_in_mm / self.vertical_marker_pixel_size
 
     def _warp_image(self, vp1, vp2):
-        return warp_image(
+        warped_img = warp_image(
             self.image, vp1, vp2, clip=self.clip, clip_factor=self.clip_factor
         )
+        warped_img = (warped_img * 255).astype(np.uint8)
+        return warped_img
 
     # Warp functions
     def warp_with_marker(self):

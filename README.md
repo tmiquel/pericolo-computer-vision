@@ -24,6 +24,19 @@ requirements.txt    # requirements file at pip format
 ```
 
 # How to use the code?
+## Install
+To set the environment and packages you can work via `pip` in your virtualenv
+```bash
+pip install -r requirements.txt
+```
+
+Or in case you have `pipenv` _([Tutorial here](https://realpython.com/pipenv-guide/))_ you can synchronize your folder to the locked virtualenv via
+```bash
+pipenv sync # For needed packages only
+pipenv sync --dev # If you want to install the dev packages also
+```
+
+
 ## Command Line
 To perform the automated perspective correction _(let the algorithm decided which method is the best)_ of an image via command line use
 ```bash

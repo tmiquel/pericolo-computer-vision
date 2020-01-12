@@ -261,7 +261,7 @@ class ImageWarper:
         return vp_hor, vp_vert
 
     def _ransac_confirmation(self, conditions):
-        cond_ratio = np.array(conditions).astype(int) / len(conditions)
+        cond_ratio = np.array(conditions).astype(int).sum() / len(conditions)
         if cond_ratio >= self.ransac_conditions_to_valid:
             logging.debug(f"CHECK - MARKER - {self.image_path}")
             logging.debug(f"CHECK - MARKER - RANSAC VALIDATION")

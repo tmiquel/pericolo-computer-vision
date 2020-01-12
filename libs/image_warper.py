@@ -83,27 +83,27 @@ class ImageWarper:
         self.warp_log_dict = {}
 
         # Config variables
-        self.num_ransac_iter = num_ransac_iter
-        self.training_threshold = training_threshold
-        self.compliance_threshold = compliance_threshold
-        self.clip = clip
-        self.clip_factor = clip_factor
-        self.allow_warping_interupt = allow_warping_interupt
-        self.max_size_allowed = max_size_allowed
-        self.first_ransac_score = first_ransac_score
-        self.second_ransac_score = second_ransac_score
-        self.min_ransac_edgelets = min_ransac_edgelets
-        self.enclosed_marker_file = enclosed_marker_file
-        self.unenclosed_marker_file = unenclosed_marker_file
-        self.min_match_count = min_match_count
-        self.moderate_match_count = moderate_match_count
-        self.strong_match_count = strong_match_count
-        self.iou_threshold = iou_threshold
-        self.ir_threshold = ir_threshold
-        self.enforce_sift_detection = enforce_sift_detection
-        self.confidence_level = confidence_level
-        self.ransac_conditions_to_valid = ransac_conditions_to_valid
-        self.marker_size_in_mm = marker_size_in_mm
+        self._num_ransac_iter = num_ransac_iter
+        self._training_threshold = training_threshold
+        self._compliance_threshold = compliance_threshold
+        self._clip = clip
+        self._clip_factor = clip_factor
+        self._allow_warping_interupt = allow_warping_interupt
+        self._max_size_allowed = max_size_allowed
+        self._first_ransac_score = first_ransac_score
+        self._second_ransac_score = second_ransac_score
+        self._min_ransac_edgelets = min_ransac_edgelets
+        self._enclosed_marker_file = enclosed_marker_file
+        self._unenclosed_marker_file = unenclosed_marker_file
+        self._min_match_count = min_match_count
+        self._moderate_match_count = moderate_match_count
+        self._strong_match_count = strong_match_count
+        self._iou_threshold = iou_threshold
+        self._ir_threshold = ir_threshold
+        self._enforce_sift_detection = enforce_sift_detection
+        self._confidence_level = confidence_level
+        self._ransac_conditions_to_valid = ransac_conditions_to_valid
+        self._marker_size_in_mm = marker_size_in_mm
 
     # Color Conversion
     def to_rgb(self):
@@ -138,11 +138,11 @@ class ImageWarper:
 
     # Condition Checking
     def _check_edgelets_number_condition(self, locations):
-        if len(locations) >= self.min_ransac_edgelets:
-            logging.debug(f"CHECK - RANSAC - {self.image_path}")
-            logging.debug(f"CHECK - RANSAC - EDGELETS NUMBER")
-            logging.debug(f"CHECK - RANSAC - EDGELETS NUMBER - SUCCESS")
-            logging.debug(
+        if len(locations) >= self._min_ransac_edgelets:
+            logging.info(f"CHECK - RANSAC - {self.image_path}")
+            logging.info(f"CHECK - RANSAC - EDGELETS NUMBER")
+            logging.info(f"CHECK - RANSAC - EDGELETS NUMBER - SUCCESS")
+            logging.info(
                 f"CHECK - RANSAC - EDGELETS NUMBER - {len(locations)} edgelets found"
             )
             return True
@@ -163,13 +163,13 @@ class ImageWarper:
             locations,
             directions,
             strengths,
-            threshold_inlier=self.training_threshold,
+            threshold_inlier=self._training_threshold,
         )
         if score.sum() >= target_score:
-            logging.debug(f"CHECK - RANSAC - {self.image_path}")
-            logging.debug(f"CHECK - RANSAC - MINIMUM SCORE")
-            logging.debug(f"CHECK - RANSAC - MINIMUM SCORE - SUCCESS")
-            logging.debug(
+            logging.info(f"CHECK - RANSAC - {self.image_path}")
+            logging.info(f"CHECK - RANSAC - MINIMUM SCORE")
+            logging.info(f"CHECK - RANSAC - MINIMUM SCORE - SUCCESS")
+            logging.info(
                 f"CHECK - RANSAC - MINIMUM SCORE - {score.sum()}/{target_score}"
             )
             return True
@@ -184,9 +184,9 @@ class ImageWarper:
 
     def _check_match(self, n_matches, name, threshold):
         if n_matches >= threshold:
-            logging.debug(f"CHECK - MARKER - {self.image_path}")
-            logging.debug(f"CHECK - MARKER - {name} SIFT DETECTION")
-            logging.debug(f"CHECK - MARKER - {name} SIFT DETECTION - SUCCESS")
+            logging.info(f"CHECK - MARKER - {self.image_path}")
+            logging.info(f"CHECK - MARKER - {name} SIFT DETECTION")
+            logging.info(f"CHECK - MARKER - {name} SIFT DETECTION - SUCCESS")
             self.set_logs(f"{name} SIFT DETECTION", True)
             return True
         else:
@@ -197,25 +197,25 @@ class ImageWarper:
             return False
 
     def _check_matches(self, n_matches, name):
-        min_check = self._check_match(n_matches, name + " MINIMUM", self.min_match_count)
+        min_check = self._check_match(n_matches, name + " MINIMUM", self._min_match_count)
         moderate_check = self._check_match(
-            n_matches, name + " MODERATE", self.moderate_match_count
+            n_matches, name + " MODERATE", self._moderate_match_count
         )
         strong_check = self._check_match(
-            n_matches, name + " STRONG", self.strong_match_count
+            n_matches, name + " STRONG", self._strong_match_count
         )
         confidence_check = [min_check, moderate_check, strong_check]
-        if self.confidence_level > -1:
-            return confidence_check[self.confidence_level]
+        if self._confidence_level > -1:
+            return confidence_check[self._confidence_level]
         else:
             return True
 
     def _check_metric(self, value, name, threshold):
         if value >= threshold:
-            logging.debug(f"CHECK - MARKER - {self.image_path}")
-            logging.debug(f"CHECK - MARKER - SIFT {name}")
-            logging.debug(f"CHECK - MARKER - SIFT {name} - SUCCESS")
-            logging.debug(
+            logging.info(f"CHECK - MARKER - {self.image_path}")
+            logging.info(f"CHECK - MARKER - SIFT {name}")
+            logging.info(f"CHECK - MARKER - SIFT {name} - SUCCESS")
+            logging.info(
                 f"CHECK - MARKER - SIFT {name} - FOUND {value} /  THRESH {threshold}"
             )
             self.set_logs(f"MARKER - SIFT {name}", True)
@@ -236,9 +236,9 @@ class ImageWarper:
             logging.warning(f"CHECK - MARKER - ARUCO - FAILURE")
             self.set_logs(f"MARKER - ARUCO", False)
             return False
-        logging.debug(f"CHECK - MARKER - {self.image_path}")
-        logging.debug(f"CHECK - MARKER - ARUCO")
-        logging.debug(f"CHECK - MARKER - ARUCO - SUCCESS")
+        logging.info(f"CHECK - MARKER - {self.image_path}")
+        logging.info(f"CHECK - MARKER - ARUCO")
+        logging.info(f"CHECK - MARKER - ARUCO - SUCCESS")
         self.set_logs(f"MARKER - ARUCO", True)
         return True
 
@@ -262,12 +262,12 @@ class ImageWarper:
 
     def _ransac_confirmation(self, conditions):
         cond_ratio = np.array(conditions).astype(int).sum() / len(conditions)
-        if cond_ratio >= self.ransac_conditions_to_valid:
-            logging.debug(f"CHECK - MARKER - {self.image_path}")
-            logging.debug(f"CHECK - MARKER - RANSAC VALIDATION")
-            logging.debug(f"CHECK - MARKER - RANSAC VALIDATION - SUCCESS")
-            logging.debug(
-                f"CHECK - MARKER - RANSAC VALIDATION - {cond_ratio} on {self.ransac_conditions_to_valid} "
+        if cond_ratio >= self._ransac_conditions_to_valid:
+            logging.info(f"CHECK - MARKER - {self.image_path}")
+            logging.info(f"CHECK - MARKER - RANSAC VALIDATION")
+            logging.info(f"CHECK - MARKER - RANSAC VALIDATION - SUCCESS")
+            logging.info(
+                f"CHECK - MARKER - RANSAC VALIDATION - {cond_ratio} on {self._ransac_conditions_to_valid} "
             )
             self.set_logs(f"RANSAC VALIDATION", True)
             return True
@@ -276,7 +276,7 @@ class ImageWarper:
             logging.warning(f"CHECK - MARKER - RANSAC VALIDATION")
             logging.warning(f"CHECK - MARKER - RANSAC VALIDATION - FAILURE")
             logging.warning(
-                f"CHECK - MARKER - RANSAC VALIDATION - {cond_ratio} on {self.ransac_conditions_to_valid} "
+                f"CHECK - MARKER - RANSAC VALIDATION - {cond_ratio} on {self._ransac_conditions_to_valid} "
             )
             self.set_logs(f"RANSAC VALIDATION", False)
             return False
@@ -284,10 +284,10 @@ class ImageWarper:
     def _sift_confirmation(self, aruco_corners_ordered):
         # Open Enclosed/Unenclosed markers images
         train_img_enclosed = cv2.imread(
-            os.path.join(MARKER_FOLDER, self.enclosed_marker_file), 0
+            os.path.join(MARKER_FOLDER, self._enclosed_marker_file), 0
         )
         train_img_unenclosed = cv2.imread(
-            os.path.join(MARKER_FOLDER, self.unenclosed_marker_file), 0
+            os.path.join(MARKER_FOLDER, self._unenclosed_marker_file), 0
         )
         # SIFT Detection
         enclosed_borders, enclosed_n_matches = detect_object_via_sift(
@@ -297,7 +297,7 @@ class ImageWarper:
             self.to_bgr(), train_img_unenclosed
         )
 
-        if self.enforce_sift_detection and not (
+        if self._enforce_sift_detection and not (
             self._check_matches(enclosed_n_matches, "ENCLOSED")
             & self._check_matches(unenclosed_n_matches, "UNENCLOSED")
         ):
@@ -319,16 +319,16 @@ class ImageWarper:
                 else aruco_corners_ordered
             ),
         )
-        if self.confidence_level > -1:
+        if self._confidence_level > -1:
             iou_condition = self._check_metric(
                 value=IoU(aruco_mask, unenclosed_mask),
                 name="IOU",
-                threshold=self.iou_threshold,
+                threshold=self._iou_threshold,
             )
             ir_condition = self._check_metric(
                 value=inclusion_ratio(aruco_mask, enclosed_mask),
                 name="IR",
-                threshold=self.ir_threshold,
+                threshold=self._ir_threshold,
             )
 
             return iou_condition & ir_condition
@@ -347,12 +347,12 @@ class ImageWarper:
             locations=locations,
             directions=directions,
             strengths=strengths,
-            num_ransac_iter=self.num_ransac_iter,
-            threshold_inlier=self.training_threshold,
+            num_ransac_iter=self._num_ransac_iter,
+            threshold_inlier=self._training_threshold,
         )
         # Second condition to check - Score of first RANSAC
         first_score_condition = self._check_ransac_score(
-            best_vp, locations, directions, strengths, self.first_ransac_score
+            best_vp, locations, directions, strengths, self._first_ransac_score
         )
         # Filter to remove compliant edgelets
         (
@@ -364,7 +364,7 @@ class ImageWarper:
             locations=locations,
             directions=directions,
             strengths=strengths,
-            threshold_inlier=self.compliance_threshold,
+            threshold_inlier=self._compliance_threshold,
         )
         # Third condition to check - Number of edgelets to perform second RANSAC
         second_edgelets_condition = self._check_edgelets_number_condition(
@@ -375,8 +375,8 @@ class ImageWarper:
             locations=remaining_location,
             directions=remaining_directions,
             strengths=remaining_strengths,
-            num_ransac_iter=self.num_ransac_iter,
-            threshold_inlier=self.training_threshold,
+            num_ransac_iter=self._num_ransac_iter,
+            threshold_inlier=self._training_threshold,
         )
         # Fourth condition to check - Score of second RANSAC
         second_score_condition = self._check_ransac_score(
@@ -384,7 +384,7 @@ class ImageWarper:
             remaining_location,
             remaining_directions,
             remaining_strengths,
-            self.second_ransac_score,
+            self._second_ransac_score,
         )
         # Check whether or not to perform reprojection
         conditions = [
@@ -407,7 +407,7 @@ class ImageWarper:
         if not (self._check_aruco(aruco_corners_ordered)):
             return False
 
-        if self.enforce_sift_detection and not (
+        if self._enforce_sift_detection and not (
             self._sift_confirmation(aruco_corners_ordered)
         ):
             return False
@@ -420,16 +420,16 @@ class ImageWarper:
 
     def _check_size(self, vp1, vp2):
         clipped_shape = infer_warp_shape(
-            self.image, vp1, vp2, clip=self.clip, clip_factor=self.clip_factor,
+            self.image, vp1, vp2, clip=self._clip, clip_factor=self._clip_factor,
         )
         unclipped_shape = infer_warp_shape(
-            self.image, vp1, vp2, clip=False, clip_factor=self.clip_factor,
+            self.image, vp1, vp2, clip=False, clip_factor=self._clip_factor,
         )
-        if ((unclipped_shape[0] > self.max_size_allowed[0]) and (unclipped_shape[1] > self.max_size_allowed[1])) and ((clipped_shape[0] > self.max_size_allowed[0]) and (clipped_shape[1] > self.max_size_allowed[1])):
+        if ((unclipped_shape[0] > self._max_size_allowed[0]) and (unclipped_shape[1] > self._max_size_allowed[1])) and ((clipped_shape[0] > self._max_size_allowed[0]) and (clipped_shape[1] > self._max_size_allowed[1])):
             logging.warning(f"CHECK - WARPING - {self.image_path}")
             logging.warning(f"CHECK - WARPING - FAILURE")
             logging.warning(f"CHECK - WARPING - Huge Image Size, warping might take a very long time")
-            if self.allow_warping_interupt:
+            if self._allow_warping_interupt:
                 logging.warning(f"CHECK - WARPING - INTERUPTION")
                 self.set_logs(f"WARPING - INTERUPTION", True)
                 return False
@@ -437,15 +437,15 @@ class ImageWarper:
         return None
 
     def find_scales(self, vp1, vp2):
-        self.marker_corners_reproj = marker_position_in_projection(self.image, vp1, vp2, aruco_borders=self.marker_corners,clip=self.clip, clip_factor=self.clip_factor)
+        self.marker_corners_reproj = marker_position_in_projection(self.image, vp1, vp2, aruco_borders=self.marker_corners,clip=self._clip, clip_factor=self._clip_factor)
         self.horizontal_marker_pixel_size = (self.marker_corners_reproj[1][0] - self.marker_corners_reproj[0][0]).astype(int)
         self.vertical_marker_pixel_size = (self.marker_corners_reproj[2][1] - self.marker_corners_reproj[1][1]).astype(int)
-        self.horizontal_scale = self.marker_size_in_mm / self.horizontal_marker_pixel_size
-        self.vertical_scale = self.marker_size_in_mm / self.vertical_marker_pixel_size
+        self.horizontal_scale = self._marker_size_in_mm / self.horizontal_marker_pixel_size
+        self.vertical_scale = self._marker_size_in_mm / self.vertical_marker_pixel_size
 
     def _warp_image(self, vp1, vp2):
         warped_img = warp_image(
-            self.image, vp1, vp2, clip=self.clip, clip_factor=self.clip_factor
+            self.image, vp1, vp2, clip=self._clip, clip_factor=self._clip_factor
         )
         warped_img = (warped_img * 255).astype(np.uint8)
         return warped_img

@@ -1,3 +1,8 @@
+"""warp_with_marker.py: Warping image with marker via command line."""
+
+__author__      = "Benbihi Walid"
+__copyright__   = "Copyright 2020, Pericolo"
+
 from libs.image_warper import ImageWarper
 from skimage import io
 

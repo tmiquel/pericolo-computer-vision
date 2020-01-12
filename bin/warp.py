@@ -1,3 +1,8 @@
+"""warp.py: Warping image by choosing methodology automatically via command line."""
+
+__author__      = "Benbihi Walid"
+__copyright__   = "Copyright 2020, Pericolo"
+
 from libs.image_warper import ImageWarper
 from skimage import io
 

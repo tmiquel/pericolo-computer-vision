@@ -26,7 +26,8 @@ notebooks/*.pdf
 notebooks/*.png
 notebooks/*.jpg
 notebooks/*.jpeg
-notebooks/* \- XX \- *.ipynb
+#notebooks/* \- XX \- *.ipynb
+notebooks/DEPRECATED - *.ipynb
 
 # Scripts
 rectification.py

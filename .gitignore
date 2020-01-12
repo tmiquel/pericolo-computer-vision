@@ -1,1 +1,32 @@
+# Folders
 .vscode/
+.ipynb_checkpoints/
+.DS_Store
+
+# Images
+data/*
+
+
+# File Types
+*.zip
+
+# Folder Control
+bin/*
+!bin/*.py
+doc/img/*
+!doc/img/*.png
+libs/*
+!libs/*.py
+markers/*
+!markers/*.png
+!markers/*.svg
+utils/*
+!utils/*.py
+notebooks/*.pdf
+notebooks/*.png
+notebooks/*.jpg
+notebooks/*.jpeg
+notebooks/* \- XX \- *.ipynb
+
+# Scripts
+rectification.py

@@ -5,6 +5,9 @@
 
 # Images
 data/*
+!data/enclosed/
+!data/board/
+!data/metadata.csv
 
 
 # File Types

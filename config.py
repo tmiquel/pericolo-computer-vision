@@ -31,6 +31,22 @@ MODERATE_MATCH_COUNT = 30                                       # Matches to fin
 STRONG_MATCH_COUNT = 50                                         # Matches to find for STRONG confidence
 CONFIDENCE_LEVEL = 0                                            # -1 No confidence check, 0 Minimum confidence check, 1 Moderate confidence check, 2 Strong confidence check
 
+# SCALEBAR
+PADDING_H_RATIO = 0.05
+PADDING_W_RATIO = 0.05
+BOX_POSITION = "upper_right"
+BOX_SIZE_H_RATIO = 0.1
+BOX_SIZE_W_RATIO = 0.25
+BOX_COLOR = (255, 255, 255)
+BOX_THICKNESS = -1
+BOX_LINETYPE = 8
+INBOX_TITLE_TEXT = "Echelle"
+INBOX_COLOR = (0, 0, 0)
+INBOX_PADDING_RATIO = 0.05
+INBOX_TITLE_RATIO = 0.3
+INBOX_LINE_RATIO = 0.3
+INBOX_VALUE_RATIO = 0.3
+INBOX_W_PAD_RATIO = 0.05
 
 
 

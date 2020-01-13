@@ -20,6 +20,7 @@ from libs.warping import warp_image, infer_warp_shape, marker_position_in_projec
 
 from utils.folders import MARKER_FOLDER
 from utils.metrics import inclusion_ratio, IoU
+from utils.scalebar import draw_scalebar
 from utils.utility_functions import order_points, polygon_to_mask
 
 from config import (
@@ -460,7 +461,11 @@ class ImageWarper:
         if result is False:
             return None
         vp1, vp2 = result
-        return self._warp_image(vp1, vp2)
+        image_warped = self._warp_image(vp1, vp2)
+        self.marker_corners_reproj = marker_position_in_projection(self.image, vp1, vp2, aruco_borders=self.marker_corners,clip=self._clip, clip_factor=self._clip_factor)
+        image_warped = draw_scalebar(image=image_warped, marker=self.marker_corners_reproj)
+        return image_warped
+
     
     def warp_without_marker(self):
         result = self._warp_without_marker()

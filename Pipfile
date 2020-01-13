@@ -16,7 +16,7 @@ numpy = "*"
 matplotlib = "*"
 scikit-image = "*"
 imutils = "*"
-opencv-contrib-python = "==3.4.2.16"
+opencv-contrib-python = "==3.4.2.17"
 
 [requires]
 python_version = "3.7"

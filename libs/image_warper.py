@@ -45,11 +45,15 @@ from config import (
     IR_THRESHOLD,
     ENFORCE_SIFT_DETECTION,
     RANSAC_CONDITIONS_TO_VALID,
-    MARKER_SIZE_IN_MM
+    MARKER_SIZE_IN_MM,
 )
 
 
 class ImageWarper:
+    """ImageWarper class is used to warp images both by using Aruco Marker detection or Vanishing Point reprojection
+    
+    """
+
     def __init__(
         self,
         image,
@@ -73,7 +77,7 @@ class ImageWarper:
         enforce_sift_detection=ENFORCE_SIFT_DETECTION,
         confidence_level=CONFIDENCE_LEVEL,
         ransac_conditions_to_valid=RANSAC_CONDITIONS_TO_VALID,
-        marker_size_in_mm=MARKER_SIZE_IN_MM
+        marker_size_in_mm=MARKER_SIZE_IN_MM,
     ):
         # Image related variables
         self.image_path = image
@@ -108,18 +112,33 @@ class ImageWarper:
 
     # Color Conversion
     def to_rgb(self):
+        """Converts initial image to RGB mode
+        
+        Returns:
+            np.array: RGB Initial Image
+        """
         if self.mode == "bgr":
             return cv2.cvtColor(self.image.copy(), cv2.COLOR_RGB2BGR)
         elif self.mode == "rgb":
             return image
 
     def to_bgr(self):
+        """Converts initial image to BGR mode
+        
+        Returns:
+            np.array: BGR Initial Image
+        """
         if self.mode == "rgb":
             return cv2.cvtColor(self.image.copy(), cv2.COLOR_BGR2RGB)
         elif self.mode == "bgr":
             return image
 
     def to_gray(self):
+        """Converts initial image to GRAYSCALE mode
+        
+        Returns:
+            np.array: GRAYSCALE Initial Image
+        """
         if self.mode == "rgb":
             return cv2.cvtColor(self.image.copy(), cv2.COLOR_RGB2GRAY)
         elif self.mode == "bgr":
@@ -128,17 +147,45 @@ class ImageWarper:
     # Warp Logs
     @property
     def logs(self):
+        """Property accessor for warping logs
+
+        Note:
+        -----
+        Logging is set at INFO level except when the algorithm fails, in that case the level is set to WARNING
+        
+        Returns:
+            dict: Warping logs
+        """
         return self.warp_log_dict
-    
+
     def reset_logs(self):
+        """Reset the logs dictionnary
+        
+        Returns:
+            ImageWaeper: returns itself
+        """
         self.warp_log_dict = {}
         return self
 
     def set_logs(self, key, value):
-        self.warp_log_dict[key] = value 
+        """Set a new entry in log dictionnary
+        
+        Args:
+            key (str): condition name
+            value (bool): Whether a condition is validated or not
+        """
+        self.warp_log_dict[key] = value
 
     # Condition Checking
     def _check_edgelets_number_condition(self, locations):
+        """Checks RANSAC conditions over minimum edgelets number
+        
+        Args:
+            locations (list): list of edgelets locations 
+        
+        Returns:
+            bool: Whether or not the condition is validated
+        """
         if len(locations) >= self._min_ransac_edgelets:
             logging.info(f"CHECK - RANSAC - {self.image_path}")
             logging.info(f"CHECK - RANSAC - EDGELETS NUMBER")
@@ -161,6 +208,18 @@ class ImageWarper:
     def _check_ransac_score(
         self, vanishing_point, locations, directions, strengths, target_score
     ):
+        """Checks RANSAC conditions over minimum score
+        
+        Args:
+            vanishing_point (np.array): Vanishing point to evaluate score for
+            locations (np.array): list of edgelets locations 
+            directions (np.array): list of edgelets directions 
+            strengths (np.array): list of edgelets strengths 
+            target_score (float): Score threshold
+        
+        Returns:
+            bool: Whether or not the condition is validated
+        """
         score = compute_score(
             vanishing_point,
             locations,
@@ -188,6 +247,16 @@ class ImageWarper:
             return False
 
     def _check_match(self, n_matches, name, threshold):
+        """Checks Aruco detection SIFT matches conditions
+        
+        Args:
+            n_matches (int): number of matches found
+            name (str): Marker type evaluated
+            threshold (int): matches threshold
+        
+        Returns:
+            bool: Whether or not the condition is validated or not
+        """
         if n_matches >= threshold:
             logging.info(f"CHECK - MARKER - {self.image_path}")
             logging.info(f"CHECK - MARKER - {name} SIFT DETECTION")
@@ -202,7 +271,18 @@ class ImageWarper:
             return False
 
     def _check_matches(self, n_matches, name):
-        min_check = self._check_match(n_matches, name + " MINIMUM", self._min_match_count)
+        """Checks Aruco detection SIFT matches conditions for each confidence level
+        
+        Args:
+            n_matches (int): number of matches found
+            name (str): Marker type evaluated
+        
+        Returns:
+            bool: Whether or not the condition is validated or not
+        """
+        min_check = self._check_match(
+            n_matches, name + " MINIMUM", self._min_match_count
+        )
         moderate_check = self._check_match(
             n_matches, name + " MODERATE", self._moderate_match_count
         )
@@ -216,6 +296,16 @@ class ImageWarper:
             return True
 
     def _check_metric(self, value, name, threshold):
+        """Check Aruco detection metrics conditions
+        
+        Args:
+            value (float): Current value of the metric
+            name (str): Metric name to evaluate
+            threshold (float): Threshold for the metric
+        
+        Returns:
+            bool: Whether or not the condition is validated
+        """
         if value >= threshold:
             logging.info(f"CHECK - MARKER - {self.image_path}")
             logging.info(f"CHECK - MARKER - SIFT {name}")
@@ -235,6 +325,14 @@ class ImageWarper:
             return False
 
     def _check_aruco(self, aruco_corners_ordered):
+        """Checks if Aruco detection algorithm has succeeded to find at least one Aruco marker
+        
+        Args:
+            aruco_corners_ordered (list): list of resulting Aruco detection
+        
+        Returns:
+            bool: Whether or not the condition is validated
+        """
         if len(aruco_corners_ordered) == 0:
             logging.warning(f"CHECK - MARKER - {self.image_path}")
             logging.warning(f"CHECK - MARKER - ARUCO")
@@ -249,6 +347,15 @@ class ImageWarper:
 
     # Hidden Warping Method
     def _vanishing_point_from_aruco(self, corners_ordered):
+        """Hidden method for Aruco marker warping
+        
+        Args:
+            corners_ordered (list): list of ordered Aruco corners coordinates
+        
+        Returns:
+            np.array: Horizontal vanishing point
+            np.array: Vertical vanishing point
+        """
         horizontal_lines = [
             [corners_ordered[0][0], corners_ordered[0][1]],
             [corners_ordered[0][3], corners_ordered[0][2]],
@@ -266,6 +373,14 @@ class ImageWarper:
         return vp_hor, vp_vert
 
     def _ransac_confirmation(self, conditions):
+        """Checks every condition to meet to consider RANSAC successful
+        
+        Args:
+            conditions (list): list of RANSAC condition results
+        
+        Returns:
+            bool: Whether or not the RANSAC should be validated
+        """
         cond_ratio = np.array(conditions).astype(int).sum() / len(conditions)
         if cond_ratio >= self._ransac_conditions_to_valid:
             logging.info(f"CHECK - MARKER - {self.image_path}")
@@ -287,6 +402,14 @@ class ImageWarper:
             return False
 
     def _sift_confirmation(self, aruco_corners_ordered):
+        """Checks out every condition to meet to consider Aruco Detection successful
+        
+        Args:
+            aruco_corners_ordered (list): list of ordered Aruco corners coordinates
+        
+        Returns:
+            bool: Whether or not Aruco detection should be used
+        """
         # Open Enclosed/Unenclosed markers images
         train_img_enclosed = cv2.imread(
             os.path.join(MARKER_FOLDER, self._enclosed_marker_file), 0
@@ -341,6 +464,12 @@ class ImageWarper:
             return True
 
     def _warp_without_marker(self):
+        """Algorithm to find vanishing points in a scene without marker
+        
+        Returns:
+            np.array: First vanishing point
+            np.array: Second vanishing point
+        """
         # First generate the lines
         _, _, lines = generate_edges(self.image)
         # Convert the lines to edgelets representation
@@ -405,6 +534,12 @@ class ImageWarper:
         return best_vp, second_best_vp
 
     def _warp_with_marker(self):
+        """Algorithm to find vanishing points in a scene with an Aruco marker
+        
+        Returns:
+            np.array: Horizontal vanishing point
+            np.array: Vertical vanishing point
+        """
         # Compute Corner detection & order points
         corners, ids = detect_markers(self.to_gray())
         aruco_corners_ordered = [order_points(marker[0]) for marker in corners]
@@ -424,16 +559,33 @@ class ImageWarper:
         return vp_hor, vp_vert
 
     def _check_size(self, vp1, vp2):
+        """Checks if the output size conditions are met
+        
+        Args:
+            vp1 (np.array): First vanishing point
+            vp2 (np.array): Second vanishing point
+        
+        Returns:
+            bool: Whether or not the condition is validated
+        """
         clipped_shape = infer_warp_shape(
             self.image, vp1, vp2, clip=self._clip, clip_factor=self._clip_factor,
         )
         unclipped_shape = infer_warp_shape(
             self.image, vp1, vp2, clip=False, clip_factor=self._clip_factor,
         )
-        if ((unclipped_shape[0] > self._max_size_allowed[0]) and (unclipped_shape[1] > self._max_size_allowed[1])) and ((clipped_shape[0] > self._max_size_allowed[0]) and (clipped_shape[1] > self._max_size_allowed[1])):
+        if (
+            (unclipped_shape[0] > self._max_size_allowed[0])
+            and (unclipped_shape[1] > self._max_size_allowed[1])
+        ) and (
+            (clipped_shape[0] > self._max_size_allowed[0])
+            and (clipped_shape[1] > self._max_size_allowed[1])
+        ):
             logging.warning(f"CHECK - WARPING - {self.image_path}")
             logging.warning(f"CHECK - WARPING - FAILURE")
-            logging.warning(f"CHECK - WARPING - Huge Image Size, warping might take a very long time")
+            logging.warning(
+                f"CHECK - WARPING - Huge Image Size, warping might take a very long time"
+            )
             if self._allow_warping_interupt:
                 logging.warning(f"CHECK - WARPING - INTERUPTION")
                 self.set_logs(f"WARPING - INTERUPTION", True)
@@ -441,14 +593,16 @@ class ImageWarper:
         self.set_logs(f"WARPING - INTERUPTION", False)
         return None
 
-    def find_scales(self, vp1, vp2):
-        self.marker_corners_reproj = marker_position_in_projection(self.image, vp1, vp2, aruco_borders=self.marker_corners,clip=self._clip, clip_factor=self._clip_factor)
-        self.horizontal_marker_pixel_size = (self.marker_corners_reproj[1][0] - self.marker_corners_reproj[0][0]).astype(int)
-        self.vertical_marker_pixel_size = (self.marker_corners_reproj[2][1] - self.marker_corners_reproj[1][1]).astype(int)
-        self.horizontal_scale = self._marker_size_in_mm / self.horizontal_marker_pixel_size
-        self.vertical_scale = self._marker_size_in_mm / self.vertical_marker_pixel_size
-
     def _warp_image(self, vp1, vp2):
+        """Given a set of 2 vanishing point, warp the initial image
+        
+        Args:
+            vp1 (np.array): First vanishing point
+            vp2 (np.array): Second vanishing point
+        
+        Returns:
+            np.array: Warped image
+        """
         warped_img = warp_image(
             self.image, vp1, vp2, clip=self._clip, clip_factor=self._clip_factor
         )
@@ -457,17 +611,35 @@ class ImageWarper:
 
     # Warp functions
     def warp_with_marker(self):
+        """Proceed to the warping with Aruco Marker
+        
+        Returns:
+            np.array: Warped image with Aruco Marker
+        """
         result = self._warp_with_marker()
         if result is False:
             return None
         vp1, vp2 = result
         image_warped = self._warp_image(vp1, vp2)
-        self.marker_corners_reproj = marker_position_in_projection(self.image, vp1, vp2, aruco_borders=self.marker_corners,clip=self._clip, clip_factor=self._clip_factor)
-        image_warped = draw_scalebar(image=image_warped, marker=self.marker_corners_reproj)
+        self.marker_corners_reproj = marker_position_in_projection(
+            self.image,
+            vp1,
+            vp2,
+            aruco_borders=self.marker_corners,
+            clip=self._clip,
+            clip_factor=self._clip_factor,
+        )
+        image_warped = draw_scalebar(
+            image=image_warped, marker=self.marker_corners_reproj
+        )
         return image_warped
 
-    
     def warp_without_marker(self):
+        """Proceed to the warping with vanishing point methodology
+        
+        Returns:
+            np.array: Warped image
+        """
         result = self._warp_without_marker()
         if result is False:
             return None
@@ -475,6 +647,11 @@ class ImageWarper:
         return self._warp_image(vp1, vp2)
 
     def warp(self):
+        """Proceed to the most suitable warping algorithm
+        
+        Returns:
+            np.array: Warped image
+        """
         warp_result = self.warp_with_marker()
         if warp_result is None:
             warp_result = self.warp_without_marker()

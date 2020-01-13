@@ -31,12 +31,33 @@ METER_SUBDIVISION_DICT = {
 
 
 def replace_values_in_string(text, args_dict):
+    """Replace text substring from a mapping dictionnary
+    
+    Args:
+        text (str): string containing substring to replace
+        args_dict (dict): dictionnary mapping containing replacements
+    
+    Returns:
+        str: replaced string
+    """
     for key in args_dict.keys():
         text = text.replace(key, str(args_dict[key]))
     return text
 
 
 def get_text_size(value_str, inbox_value_px, line_br_pt, line_tl_pt):
+    """Get the size, in pixels, and font size to use to draw text fitting the inside box size
+    
+    Args:
+        value_str (str): Text to draw
+        inbox_value_px (int): Maximum size allowed in pixel
+        line_br_pt (np.array): Bottom-right corner of the scalebar
+        line_tl_pt (np.array): Top-left corner of the scalebar
+    
+    Returns:
+        int: font size value
+        tuple: size, in pixels, of the text to be drawn
+    """
     for i in range(16):
         resulting_size = cv2.getTextSize(
             value_str, fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=i + 1, thickness=10
@@ -65,6 +86,20 @@ def compute_inbox_details(
     inbox_line_ratio=INBOX_LINE_RATIO,
     inbox_value_ratio=INBOX_VALUE_RATIO,
 ):
+    """Compute inbox details
+    
+    Args:
+        size_h_px (int): box height in pixel
+        size_w_px (int): box width in pixel
+        inbox_w_pad_ratio (float, optional): Inbox padding width ratio. Defaults to INBOX_W_PAD_RATIO.
+        inbox_padding_ratio (float, optional): Inbox padding height ratio. Defaults to INBOX_PADDING_RATIO.
+        inbox_title_ratio (float, optional): Inbox Title height ratio. Defaults to INBOX_TITLE_RATIO.
+        inbox_line_ratio (float, optional): Inbox scalebar height ratio. Defaults to INBOX_LINE_RATIO.
+        inbox_value_ratio (float, optional): Inbox scale text height ratio. Defaults to INBOX_VALUE_RATIO.
+    
+    Returns:
+        [type]: [description]
+    """
     inbox_w_pad_px = size_w_px * inbox_w_pad_ratio
     inbox_pad_px = size_h_px * inbox_padding_ratio
     inbox_title_px = size_h_px * inbox_title_ratio
@@ -90,6 +125,21 @@ def compute_inbox_scalebar_corners(
     inbox_line_thickness_px,
     inbox_w_pad_px,
 ):
+    """Generate the inbox scalebar coordinates
+    
+    Args:
+        tl_pt (tuple): Top-left box coordinates
+        br_pt (tuple): Bottom-right box coordinates
+        inbox_pad_px (int): Inbox padding height  in pixel
+        inbox_title_px (int): Inbox titlebox height in pixel
+        inbox_value_px (int): Inbox scale text height in pixel
+        inbox_line_thickness_px (int): Inbox scalebar thickness height in pixel
+        inbox_w_pad_px (int): Inbox padding width in pixel
+    
+    Returns:
+        np.array: Scalebar top-left coordinates
+        np.array: Scalebar bottom-right coordinates
+    """
     line_tl_pt = np.array(tl_pt) + np.array(
         (inbox_pad_px + inbox_title_px + inbox_line_thickness_px, inbox_w_pad_px)
     )
@@ -104,6 +154,20 @@ def compute_inbox_scalebar_corners(
 def compute_background_box_corners(
     pad_px, size_h_px, size_w_px, height, width, box_position
 ):
+    """Compute the background box coordinates
+    
+    Args:
+        pad_px (int): padding size
+        size_h_px (int): box height in pixel
+        size_w_px (int): box width in pixel
+        height (int): image height
+        width (int): image width
+        box_position (str): box corner position
+    
+    Returns:
+        np.array: Background box top-left coordinates
+        np.array: Background box bottom-right coordinates
+    """
     # Compute background box coordinates
     if box_position == "upper_right":
         tl_pt = (pad_px, width - pad_px - size_w_px)

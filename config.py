@@ -32,21 +32,21 @@ STRONG_MATCH_COUNT = 50                                         # Matches to fin
 CONFIDENCE_LEVEL = 0                                            # -1 No confidence check, 0 Minimum confidence check, 1 Moderate confidence check, 2 Strong confidence check
 
 # SCALEBAR
-PADDING_H_RATIO = 0.05
-PADDING_W_RATIO = 0.05
-BOX_POSITION = "upper_right"
-BOX_SIZE_H_RATIO = 0.1
-BOX_SIZE_W_RATIO = 0.25
-BOX_COLOR = (255, 255, 255)
-BOX_THICKNESS = -1
-BOX_LINETYPE = 8
-INBOX_TITLE_TEXT = "Echelle"
-INBOX_COLOR = (0, 0, 0)
-INBOX_PADDING_RATIO = 0.05
-INBOX_TITLE_RATIO = 0.3
-INBOX_LINE_RATIO = 0.3
-INBOX_VALUE_RATIO = 0.3
-INBOX_W_PAD_RATIO = 0.05
+PADDING_H_RATIO = 0.05                                          # Percentage of image height to define padding height
+PADDING_W_RATIO = 0.05                                          # Percentage of image width to define padding width
+BOX_POSITION = "upper_right"                                    # Scale box position
+BOX_SIZE_H_RATIO = 0.1                                          # Percentage of image height to define box height
+BOX_SIZE_W_RATIO = 0.25                                         # Percentage of image width to define box height
+BOX_COLOR = (255, 255, 255)                                     # Background box color
+BOX_THICKNESS = -1                                              # Background box thickness (set it to negative to fill the box)
+BOX_LINETYPE = 8                                                # 
+INBOX_TITLE_TEXT = "Echelle"                                    # Box title word
+INBOX_COLOR = (0, 0, 0)                                         # Box text color
+INBOX_PADDING_RATIO = 0.05                                      # Percentage of box height to define inner padding height (1 = 2*INBOX_PADDING_RATIO + INBOX_TITLE_RATIO + INBOX_LINE_RATIO + INBOX_VALUE_RATIO)
+INBOX_TITLE_RATIO = 0.3                                         # Percentage of box height to define inner title zone height (1 = 2*INBOX_PADDING_RATIO + INBOX_TITLE_RATIO + INBOX_LINE_RATIO + INBOX_VALUE_RATIO)
+INBOX_LINE_RATIO = 0.3                                          # Percentage of box height to define inner scalebar zone height (1 = 2*INBOX_PADDING_RATIO + INBOX_TITLE_RATIO + INBOX_LINE_RATIO + INBOX_VALUE_RATIO)
+INBOX_VALUE_RATIO = 0.3                                         # Percentage of box height to define inner scale text zone height (1 = 2*INBOX_PADDING_RATIO + INBOX_TITLE_RATIO + INBOX_LINE_RATIO + INBOX_VALUE_RATIO)
+INBOX_W_PAD_RATIO = 0.05                                        # Percentage of box width to define inner padding width
 
 
 

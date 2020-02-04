@@ -1,7 +1,7 @@
 # Pericolo - Perspective correction
 > **Disclaimer**
 > 
-> This repository is build by Walid Benbihi as part of a freelance contract at the exclusive discretion of Pericolo teams.
+> This repository is built by Walid Benbihi at the exclusive discretion of Pericolo team.
 
 
 # Project structure

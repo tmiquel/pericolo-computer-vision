@@ -1,5 +1,8 @@
 # Pericolo - Perspective correction
 > **Disclaimer**
+
+
+EDIT 
 > 
 > This repository is built by Walid Benbihi at the exclusive discretion of Pericolo team.
 

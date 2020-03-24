@@ -22,9 +22,10 @@ Pipfile.loc         # requirements lock file
 README.md           # 
 requirements.txt    # requirements file at pip format
 ```
+# Edit de Fatos
+Ceci est un edit entièrement compris lors du merge
 
-# How to use the code? (edit d'Edwyn)
-
+# How to use the code? (edit d'Edwyn & de Fatos)
 
 Une nouvelle phase (Edwyn)
 

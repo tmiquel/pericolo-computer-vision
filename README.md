@@ -23,7 +23,11 @@ README.md           #
 requirements.txt    # requirements file at pip format
 ```
 
-# How to use the code?
+# How to use the code? (edit d'Edwyn)
+
+
+Une nouvelle phase (Edwyn)
+
 ## Install
 To set the environment and packages you can work via `pip` in your virtualenv
 ```bash
